@@ -1,4 +1,4 @@
-package fraccion;
+package examen;
 
 // Clase que define una fracción
 public class Fraccion {
@@ -20,18 +20,19 @@ public class Fraccion {
 	public Fraccion(int num, int den) {
 		// debo evitar crear fracciones con 0 en el divisor
 		this.num = num;
-		if (den == 0)
+		if (den == 0) {
 			this.den = 1;
-		else
+		}else {
 			this.den = den;
 		// devuelvo la fracci�n simplificada
 		simplificar();
+		}
 	}
 
 	// Constructor copia
-	public Fraccion(final Fraccion f) {
-		num = f.num;
-		den = f.den;
+	public Fraccion(final Fraccion valorFraccionf) {
+		num = valorFraccionf.num;
+		den = valorFraccionf.den;
 	}
 
 	// getters y setters
@@ -55,41 +56,39 @@ public class Fraccion {
 	}
 
 	// Cálculo del máximo común divisor por el algoritmo de Euclides
-	private int mcd() {
-		int u = (Math.abs(num)); // valor absoluto del numerador
-		int v = (Math.abs(den)); // valor absoluto del denominador
-		if (v == 0) {
-			return u;
+	private int maxComunDivisor() {
+		int valornum = Math.abs(num); // valor absoluto del numerador
+		int valorden = Math.abs(den); // valor absoluto del denominador
+		int resultado;
+		while (valorden != 0) {
+			resultado = valornum % valorden;
+			valornum = valorden;
+			valorden = resultado;
 		}
-		int r;
-		while (v != 0) {
-			r = u % v;
-			u = v;
-			v = r;
-		}
-		return u;
+		return valornum;
 	}
 
 	// método para simplificar fracciones
 	public void simplificar() {
-		int n = mcd();
-		num = num / n;
-		den = den / n;
+		int maxComDiv = maxComunDivisor();
+		num = num / maxComDiv;
+		den = den / maxComDiv;
 	}
 
 	// Método toString
 
 	public String toString() {
-		String mensaje = num + "/" + den;
-		return mensaje;
+		return num + "/" + den;
 
 	}
 
 	// suma de fracciones
-	public Fraccion sumar(Fraccion f) {
+	public Fraccion sumar(Fraccion valorFraccion) {
 		Fraccion aux = new Fraccion();
-		aux.num = num * f.den + den * f.num;
-		aux.den = den * f.den;
+		int cruce1 = num * valorFraccion.den;
+		int cruce2 = den * valorFraccion.num;
+		aux.num = cruce1 + cruce2;
+		aux.den = den * valorFraccion.den;
 		aux.simplificar();
 		return aux;
 
@@ -97,21 +96,24 @@ public class Fraccion {
 
 	// Restar fracciones
 
-	public Fraccion restar(Fraccion f) {
+	public Fraccion restar(Fraccion valorFraccion) {
 		Fraccion aux = new Fraccion();
-		aux.num = num * f.den - den * f.num;
-		aux.den = den * f.den;
+		int cruce1 = num * valorFraccion.den;
+		int cruce2 = den * valorFraccion.num;
+		aux.num = cruce1 - cruce2;
+		aux.den = den * valorFraccion.den;
 		aux.simplificar();
 		return aux;
 
 	}
 
 //Multiplicar fracciones
+	
 
-	public Fraccion multiplicar(Fraccion f) {
+	public Fraccion multiplicar(Fraccion valorFraccion) {
 		Fraccion aux = new Fraccion();
-		aux.num = num * f.num;
-		aux.den = den * f.den;
+		aux.num = num * valorFraccion.num;
+		aux.den = den * valorFraccion.den;
 		aux.simplificar();
 		return aux;
 
@@ -119,10 +121,10 @@ public class Fraccion {
 
 //Dividir fracciones
 
-	public Fraccion dividir(Fraccion f) {
+	public Fraccion dividir(Fraccion valorFraccion) {
 		Fraccion aux = new Fraccion();
-		aux.num = num * f.den;
-		aux.den = den * f.num;
+		aux.num = num * valorFraccion.den;
+		aux.den = den * valorFraccion.num;
 		aux.simplificar();
 		return aux;
 
